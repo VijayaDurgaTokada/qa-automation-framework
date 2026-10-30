@@ -42,4 +42,18 @@ public class LoginTests {
         By.cssSelector("[data-test='title']")));
         Assert.assertEquals(title.getText(), "Products");
     }
+    @Test
+    public void invalidLoginShowsError(){
+        driver.get("https://www.saucedemo.com");
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("wrong_password");
+        driver.findElement(By.id("login-button")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.cssSelector("[data-test='error']")));
+
+        Assert.assertTrue(error.getText().contains("do not match any user"));
+
+    }
 }
